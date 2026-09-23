@@ -524,11 +524,118 @@
         </button>
       </div>
 
-      <!-- Detail Card Panel -->
-      <div id="pain-detail-card" class="max-w-4xl mx-auto bg-white rounded-3xl border border-slate-200/90 shadow-xl p-6 sm:p-10 transition-all duration-300">
-        <div id="pain-detail-content">
-          <!-- Initial Default is rendered by JS -->
+      <!-- Interactive Body Scanner & Therapy Station Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        
+        <!-- Left: Interactive Body Scanner Widget (5 cols) -->
+        <div class="lg:col-span-5 bg-gradient-to-b from-royal-950 via-slate-900 to-royal-950 rounded-3xl p-6 border border-teal-500/30 shadow-2xl relative overflow-hidden flex flex-col justify-between">
+          <!-- Ambient Glow -->
+          <div class="absolute -top-20 -left-20 w-48 h-48 bg-teal-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="absolute -bottom-20 -right-20 w-48 h-48 bg-gold-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <!-- Scanner Header -->
+          <div class="relative z-10 flex items-center justify-between pb-3 border-b border-white/10">
+            <div class="flex items-center gap-2">
+              <span class="flex h-2.5 w-2.5 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal-400"></span>
+              </span>
+              <span class="text-xs font-bold uppercase tracking-widest text-teal-300" data-i18n="scanner_badge">Anatomical Pain Locator</span>
+            </div>
+            <span class="text-[10px] text-slate-400 bg-white/5 px-2.5 py-0.5 rounded-full border border-white/10 font-mono">3D Sensor Map</span>
+          </div>
+
+          <p class="text-xs text-slate-300 mt-3 font-light relative z-10" data-i18n="scanner_instruction">
+            Tap any glowing joint on the body to see targeted therapy
+          </p>
+
+          <!-- SVG Anatomical Silhouette Container -->
+          <div class="relative my-4 flex items-center justify-center min-h-[330px] z-10">
+            <!-- Medical Grid lines background -->
+            <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#0d9488_1px,transparent_1px),linear-gradient(to_bottom,#0d9488_1px,transparent_1px)] bg-[size:24px_24px] rounded-2xl pointer-events-none"></div>
+
+            <!-- Stylized Human Anatomy SVG Silhouette -->
+            <svg viewBox="0 0 200 360" class="w-48 h-[310px] text-slate-700/60 filter drop-shadow-[0_0_15px_rgba(13,148,136,0.2)]" fill="currentColor">
+              <!-- Head -->
+              <ellipse cx="100" cy="32" rx="18" ry="22" class="fill-slate-800/80 stroke-teal-500/40" stroke-width="1.5" />
+              <!-- Neck -->
+              <path d="M92 52 L92 68 L108 68 L108 52 Z" class="fill-slate-800/80 stroke-teal-500/40" stroke-width="1.5" />
+              <!-- Torso / Chest / Spine -->
+              <path d="M68 70 C70 66 130 66 132 70 L126 150 C120 170 80 170 74 150 Z" class="fill-slate-800/90 stroke-teal-500/50" stroke-width="1.5" />
+              <!-- Spine centerline -->
+              <line x1="100" y1="70" x2="100" y2="160" stroke="#14b8a6" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+              <!-- Left Arm -->
+              <path d="M68 72 C58 85 45 130 42 165 C40 180 38 200 36 215 C34 220 38 224 42 220 C46 215 54 185 58 160 C64 135 74 95 76 80 Z" class="fill-slate-800/70 stroke-teal-500/30" stroke-width="1.2" />
+              <!-- Right Arm -->
+              <path d="M132 72 C142 85 155 130 158 165 C160 180 162 200 164 215 C166 220 162 224 158 220 C154 215 146 185 142 160 C136 135 126 95 124 80 Z" class="fill-slate-800/70 stroke-teal-500/30" stroke-width="1.2" />
+              <!-- Pelvis -->
+              <path d="M74 150 C80 168 120 168 126 150 L128 185 C122 195 78 195 72 185 Z" class="fill-slate-800/90 stroke-teal-500/40" stroke-width="1.5" />
+              <!-- Left Leg -->
+              <path d="M74 185 C76 210 76 240 78 270 C80 295 80 325 78 350 C80 354 88 354 90 350 C92 325 94 290 94 265 C96 235 96 210 98 188 Z" class="fill-slate-800/80 stroke-teal-500/40" stroke-width="1.5" />
+              <!-- Right Leg -->
+              <path d="M126 185 C124 210 124 240 122 270 C120 295 120 325 122 350 C120 354 112 354 110 350 C108 325 106 290 106 265 C104 235 104 210 102 188 Z" class="fill-slate-800/80 stroke-teal-500/40" stroke-width="1.5" />
+            </svg>
+
+            <!-- INTERACTIVE HOTSPOTS ON BODY -->
+            <!-- 1. Brain / Neuro (Top Center) -->
+            <button type="button" class="body-hotspot absolute top-3 left-1/2 -translate-x-1/2 group" data-pain="neuro" aria-label="Neuro & Stroke Care">
+              <span class="hotspot-pulse absolute -inset-2 rounded-full bg-purple-500/40 opacity-0 group-hover:opacity-100 transition"></span>
+              <span class="hotspot-dot relative flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 border-2 border-purple-400 text-purple-300 shadow-lg text-[10px] font-bold group-hover:scale-125 transition-transform">
+                🧠
+              </span>
+            </button>
+
+            <!-- 2. Neck / Cervical (Center Neck) -->
+            <button type="button" class="body-hotspot absolute top-[52px] left-1/2 -translate-x-1/2 group" data-pain="neck" aria-label="Neck & Cervical">
+              <span class="hotspot-pulse absolute -inset-2 rounded-full bg-amber-500/40 opacity-0 group-hover:opacity-100 transition"></span>
+              <span class="hotspot-dot relative flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 border-2 border-amber-400 text-amber-300 shadow-lg text-[10px] font-bold group-hover:scale-125 transition-transform">
+                🦴
+              </span>
+            </button>
+
+            <!-- 3. Shoulder (Right Shoulder) -->
+            <button type="button" class="body-hotspot absolute top-[68px] right-[27%] group" data-pain="shoulder" aria-label="Frozen Shoulder">
+              <span class="hotspot-pulse absolute -inset-2 rounded-full bg-teal-500/40 opacity-0 group-hover:opacity-100 transition"></span>
+              <span class="hotspot-dot relative flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 border-2 border-teal-400 text-teal-300 shadow-lg text-[10px] font-bold group-hover:scale-125 transition-transform">
+                💪
+              </span>
+            </button>
+
+            <!-- 4. Lower Back / Spine (Waist Center) -->
+            <button type="button" class="body-hotspot active absolute top-[134px] left-1/2 -translate-x-1/2 group" data-pain="back" aria-label="Lower Back & Sciatica">
+              <span class="hotspot-pulse absolute -inset-2 rounded-full bg-rose-500/40 animate-ping"></span>
+              <span class="hotspot-dot relative flex h-8 w-8 items-center justify-center rounded-full bg-rose-600 border-2 border-white text-white shadow-xl text-xs font-bold scale-110 group-hover:scale-125 transition-transform">
+                💥
+              </span>
+            </button>
+
+            <!-- 5. Knee Joint (Left Knee) -->
+            <button type="button" class="body-hotspot absolute top-[236px] left-[35%] group" data-pain="knee" aria-label="Knee Joint Arthritis">
+              <span class="hotspot-pulse absolute -inset-2 rounded-full bg-emerald-500/40 opacity-0 group-hover:opacity-100 transition"></span>
+              <span class="hotspot-dot relative flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 border-2 border-emerald-400 text-emerald-300 shadow-lg text-[10px] font-bold group-hover:scale-125 transition-transform">
+                🦵
+              </span>
+            </button>
+          </div>
+
+          <!-- Bottom Joint Selector Status -->
+          <div class="relative z-10 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-300">
+            <span class="flex items-center gap-1.5 text-teal-300 font-semibold">
+              <i data-lucide="scan" class="w-3.5 h-3.5"></i>
+              <span>Active Body Sensor</span>
+            </span>
+            <span class="text-slate-400">Click any body joint icon</span>
+          </div>
+
         </div>
+
+        <!-- Right: Detail Card Panel (7 cols) -->
+        <div id="pain-detail-card" class="lg:col-span-7 bg-white rounded-3xl border border-slate-200/90 shadow-xl p-6 sm:p-9 flex flex-col justify-between transition-all duration-300">
+          <div id="pain-detail-content">
+            <!-- Initial Default is rendered by JS -->
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -1081,6 +1188,104 @@
                    class="rounded-2xl w-full h-64 object-cover shadow-md">
             </div>
           </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive 3-Minute Daily Spine & Joint Mobility Tool -->
+  <section id="daily-exercises" class="py-16 bg-gradient-to-b from-slate-50 via-teal-50/20 to-white border-y border-slate-200/80 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-teal-100 text-teal-900 border border-teal-300/80 text-xs font-bold uppercase tracking-wider mb-2">
+          <i data-lucide="activity" class="w-3.5 h-3.5 text-teal-700"></i>
+          <span data-i18n="stretch_badge">Doctor's Daily Care • Zero Equipment</span>
+        </div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-royal-950 mt-1" data-i18n="stretch_title">
+          Interactive 3-Minute Daily Spine &amp; Joint Routine
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2 font-light" data-i18n="stretch_desc">
+          Perform these 3 doctor-prescribed mobility stretches daily to decompress spinal discs, relieve desk stiffness, and strengthen joint stability.
+        </p>
+      </div>
+
+      <!-- Main Routine Player Card -->
+      <div class="max-w-4xl mx-auto bg-white rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden">
+        
+        <!-- Player Top Bar with 3 Step Pills -->
+        <div class="bg-royal-950 text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Doctor-Guided Session</span>
+          </div>
+          
+          <!-- Step Indicators -->
+          <div class="flex items-center gap-2" id="routine-step-tabs">
+            <button type="button" class="routine-tab active px-3 py-1 rounded-full text-xs font-bold bg-brand-700 text-white transition" data-step="0">1. Neck Relief (30s)</button>
+            <button type="button" class="routine-tab px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-slate-300 hover:text-white transition" data-step="1">2. Spine Decompress (45s)</button>
+            <button type="button" class="routine-tab px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-slate-300 hover:text-white transition" data-step="2">3. Knee Strengthen (45s)</button>
+          </div>
+        </div>
+
+        <!-- Player Body -->
+        <div class="p-6 sm:p-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          
+          <!-- Left: Big Countdown Timer & Control Dial (5 cols) -->
+          <div class="md:col-span-5 flex flex-col items-center justify-center p-6 rounded-2xl bg-gradient-to-b from-brand-50 to-slate-50 border border-brand-200/70 text-center">
+            
+            <!-- Circular Animated Timer Ring -->
+            <div class="relative w-40 h-40 flex items-center justify-center mb-4">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" stroke="#e2e8f0" stroke-width="8" fill="none" />
+                <circle id="timer-progress-ring" cx="60" cy="60" r="50" stroke="#0f766e" stroke-width="8" stroke-linecap="round" fill="none"
+                        stroke-dasharray="314.159" stroke-dashoffset="0" class="transition-all duration-1000 ease-linear" />
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="timer-seconds-display" class="font-serif text-4xl sm:text-5xl font-bold text-royal-950">30</span>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Seconds</span>
+              </div>
+            </div>
+
+            <!-- Player Controls -->
+            <div class="flex items-center gap-3 w-full justify-center">
+              <button id="btn-routine-toggle" type="button" 
+                      class="px-5 py-3 rounded-xl bg-brand-800 hover:bg-brand-900 active:scale-95 text-white font-bold text-xs uppercase tracking-wider shadow-md transition flex items-center gap-2">
+                <i id="btn-routine-icon" data-lucide="play" class="w-4 h-4 text-gold-400"></i>
+                <span id="btn-routine-text" data-i18n="stretch_btn_start">Start Guided Routine</span>
+              </button>
+
+              <button id="btn-routine-next" type="button" 
+                      class="px-4 py-3 rounded-xl bg-white hover:bg-slate-100 active:scale-95 text-slate-700 font-bold text-xs uppercase tracking-wider border border-slate-300 transition flex items-center gap-1 shadow-sm"
+                      title="Next Stretch">
+                <span data-i18n="stretch_btn_next">Next</span>
+                <i data-lucide="skip-forward" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Right: Stretch Instructions & Medical Rationale (7 cols) -->
+          <div class="md:col-span-7 space-y-4" id="routine-instruction-box">
+            <!-- Dynamically populated by JS -->
+          </div>
+
+        </div>
+
+        <!-- Player Bottom Banner -->
+        <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
+          <div class="flex items-center gap-2">
+            <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+            <span><strong>Medical Safety:</strong> Stop immediately if you experience sharp or radiating nerve pain.</span>
+          </div>
+          <a href="https://wa.me/918167412511?text=Hello%20Dr.%20Sudhanya%20Das,%20I%20would%20like%20to%20request%20a%20personalized%20home%20exercise%20chart%20for%20my%20pain." 
+             target="_blank" rel="noopener noreferrer"
+             class="font-bold text-brand-800 hover:text-brand-900 underline flex items-center gap-1 flex-shrink-0">
+            <span>Request Custom Home Exercise Chart</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
         </div>
 
       </div>
@@ -1842,6 +2047,120 @@
       </div>
     </div>
   </footer>
+
+  <!-- Floating Doctor WhatsApp Quick-Chat Concierge (Tablet & Desktop) -->
+  <div id="doctor-chat-widget" class="fixed bottom-6 right-6 hidden sm:block z-50">
+    
+    <!-- Collapsed Trigger Pill -->
+    <button id="btn-chat-open" type="button" 
+            class="flex items-center gap-3 px-4 py-3 rounded-full bg-royal-950/95 hover:bg-royal-900 text-white border border-teal-500/40 shadow-2xl shadow-royal-950/40 transition-all duration-300 hover:scale-105 active:scale-95 group">
+      <div class="relative w-9 h-9 rounded-full overflow-hidden border-2 border-emerald-400 flex-shrink-0">
+        <picture>
+          <source srcset="images/dr-sudhanya-das.webp" type="image/webp">
+          <img src="images/dr-sudhanya-das.jpg" alt="Dr. Sudhanya Das" class="w-full h-full object-cover object-top">
+        </picture>
+        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-slate-900"></span>
+      </div>
+      <div class="text-left pr-1">
+        <div class="text-xs font-bold text-white flex items-center gap-1.5" data-i18n="chat_pill_title">
+          Chat with Dr. Das
+        </div>
+        <div class="text-[10px] text-emerald-300 font-medium flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Online Desk</span>
+        </div>
+      </div>
+      <div class="w-7 h-7 rounded-full bg-emerald-600 group-hover:bg-emerald-500 text-white flex items-center justify-center transition">
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+      </div>
+    </button>
+
+    <!-- Expanded Popup Card (Hidden by default) -->
+    <div id="doctor-chat-card" 
+         class="hidden w-80 sm:w-96 rounded-3xl bg-white/98 backdrop-blur-2xl border border-slate-200/90 shadow-2xl shadow-royal-950/20 overflow-hidden transition-all duration-300">
+      
+      <!-- Card Header -->
+      <div class="bg-gradient-to-r from-royal-950 via-brand-900 to-royal-950 text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="relative w-11 h-11 rounded-2xl overflow-hidden border-2 border-gold-400 shadow-md">
+            <picture>
+              <source srcset="images/dr-sudhanya-das.webp" type="image/webp">
+              <img src="images/dr-sudhanya-das.jpg" alt="Dr. Sudhanya Das" class="w-full h-full object-cover object-top">
+            </picture>
+            <span class="absolute bottom-0.5 right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-royal-950"></span>
+          </div>
+          <div>
+            <h4 class="font-serif font-bold text-sm text-white">Dr. Sudhanya Das, PT</h4>
+            <p class="text-[10px] text-emerald-300 font-medium" data-i18n="chat_status">Online • Belda Clinic Desk</p>
+          </div>
+        </div>
+        <button id="btn-chat-close" type="button" 
+                class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition"
+                aria-label="Close chat card">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Card Body -->
+      <div class="p-4 space-y-3 bg-slate-50/70">
+        <!-- Message Bubble from Clinic -->
+        <div class="flex items-start gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-brand-800 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+            PT
+          </div>
+          <div class="bg-white p-3 rounded-2xl rounded-tl-sm border border-slate-200/80 shadow-xs text-xs text-slate-700 leading-relaxed font-light">
+            <p data-i18n="chat_greeting">Hello! How can Dr. Das help you relieve your pain today?</p>
+          </div>
+        </div>
+
+        <!-- Quick 1-Click Action Options -->
+        <div class="pt-1 space-y-2">
+          <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">Select an instant enquiry:</p>
+          
+          <a href="https://wa.me/918167412511?text=Hello%20Dr.%20Sudhanya%20Das,%20I%20have%20severe%20Back/Sciatica%20pain%20and%20need%20urgent%20consultation." 
+             target="_blank" rel="noopener noreferrer"
+             class="w-full text-left p-2.5 rounded-xl bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-xs font-semibold text-slate-800 hover:text-emerald-800 flex items-center justify-between transition shadow-2xs group">
+            <span class="flex items-center gap-2">
+              <span>💥</span>
+              <span data-i18n="chat_opt1">Severe Back / Sciatica Pain</span>
+            </span>
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 transition"></i>
+          </a>
+
+          <a href="https://wa.me/918167412511?text=Hello%20Dr.%20Sudhanya%20Das,%20I%20would%20like%20to%20request%20a%20Home%20Visit%20Physiotherapy%20Consultation%20in%20Belda." 
+             target="_blank" rel="noopener noreferrer"
+             class="w-full text-left p-2.5 rounded-xl bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-xs font-semibold text-slate-800 hover:text-emerald-800 flex items-center justify-between transition shadow-2xs group">
+            <span class="flex items-center gap-2">
+              <span>👵</span>
+              <span data-i18n="chat_opt2">Request Home Visit in Belda</span>
+            </span>
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 transition"></i>
+          </a>
+
+          <a href="https://wa.me/918167412511?text=Hello%20Dr.%20Sudhanya%20Das,%20Please%20let%20me%20know%20your%20consultation%20timings%20and%20fees%20at%20Belda%20clinic." 
+             target="_blank" rel="noopener noreferrer"
+             class="w-full text-left p-2.5 rounded-xl bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 text-xs font-semibold text-slate-800 hover:text-emerald-800 flex items-center justify-between transition shadow-2xs group">
+            <span class="flex items-center gap-2">
+              <span>📅</span>
+              <span data-i18n="chat_opt3">Consultation Fee &amp; Slot Enquiry</span>
+            </span>
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 transition"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card Footer -->
+      <div class="p-3 bg-white border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+        <span>Belda Clinic Direct Desk</span>
+        <a href="tel:+918167412511" class="font-bold text-royal-950 hover:text-brand-800 flex items-center gap-1">
+          <i data-lucide="phone" class="w-3 h-3 text-gold-600"></i>
+          <span>8167412511</span>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
 
   <!-- Scripts -->
   <script src="js/translations.js"></script>

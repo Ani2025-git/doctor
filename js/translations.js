@@ -125,7 +125,31 @@ const i18nData = {
     // Mobile Action Bar
     mobile_action_call: "Call Doctor",
     mobile_action_wa: "WhatsApp",
-    mobile_action_consult: "Book Visit"
+    mobile_action_consult: "Book Visit",
+
+    // Interactive Body Scanner
+    scanner_badge: "Anatomical Pain Locator",
+    scanner_instruction: "Tap any glowing joint on the body to see targeted therapy",
+    scanner_front: "Front View",
+    scanner_back: "Spine / Back View",
+
+    // 3-Minute Daily Spine Stretches
+    stretch_badge: "Doctor's Daily Care • Zero Equipment",
+    stretch_title: "Interactive 3-Minute Daily Spine & Joint Routine",
+    stretch_desc: "Perform these 3 doctor-prescribed mobility stretches daily to decompress spinal discs, relieve desk stiffness, and strengthen joint stability.",
+    stretch_btn_start: "Start Guided Routine",
+    stretch_btn_pause: "Pause Timer",
+    stretch_btn_resume: "Resume",
+    stretch_btn_next: "Next Step",
+    stretch_btn_reset: "Reset",
+
+    // Floating Doctor Chat Card
+    chat_pill_title: "Chat with Dr. Das",
+    chat_status: "Online • Belda Clinic Desk",
+    chat_greeting: "Hello! How can Dr. Das help you relieve your pain today?",
+    chat_opt1: "Severe Back / Sciatica Pain",
+    chat_opt2: "Request Home Visit in Belda",
+    chat_opt3: "Consultation Fee & Slot Enquiry"
   },
 
   bn: {
@@ -252,7 +276,31 @@ const i18nData = {
     // Mobile Action Bar
     mobile_action_call: "ডাক্তারকে কল",
     mobile_action_wa: "হোয়াটসঅ্যাপ",
-    mobile_action_consult: "বুকিং"
+    mobile_action_consult: "বুকিং",
+
+    // Interactive Body Scanner
+    scanner_badge: "শরীরের ব্যথার স্থান নির্দেশক",
+    scanner_instruction: "শরীরের যেকোনো অংশে ট্যাপ করে চিকিৎসা পদ্ধতি দেখুন",
+    scanner_front: "সম্মুখ ভাগ",
+    scanner_back: "মেরুদণ্ড / পশ্চাৎ ভাগ",
+
+    // 3-Minute Daily Spine Stretches
+    stretch_badge: "ডাক্তারের পরামর্শ • দৈনন্দিন যত্ন",
+    stretch_title: "দৈনন্দিন ৩-মিনিটের স্পাইন ও জয়েন্ট স্ট্রেচ গাইড",
+    stretch_desc: "মেরুদণ্ডের চাপ কমাতে ও শরীরের জড়তা কাটাতে ডাঃ সুধন্য দাসের পরামর্শে ৩টি সহজ ও কার্যকর ব্যায়াম প্রতিদিন করুন।",
+    stretch_btn_start: "স্ট্রেচিং শুরু করুন",
+    stretch_btn_pause: "বিরতি",
+    stretch_btn_resume: "চালিয়ে যান",
+    stretch_btn_next: "পরবর্তী ব্যায়াম",
+    stretch_btn_reset: "পুনরায় শুরু",
+
+    // Floating Doctor Chat Card
+    chat_pill_title: "ডাঃ দাসের সাথে চ্যাট",
+    chat_status: "অনলাইন • বেলদা ক্লিনিক ডেস্ক",
+    chat_greeting: "নমস্কার! আপনার ব্যথা বা সমস্যার সমাধানে কীভাবে সাহায্য করতে পারি?",
+    chat_opt1: "তীব্র কোমর ও সায়াটিকা ব্যথা",
+    chat_opt2: "বেলদায় হোম ভিজিট সেবা",
+    chat_opt3: "ভিজিট ফি ও সময় নির্ধারণ"
   }
 };
 
@@ -308,6 +356,12 @@ function setLanguage(lang) {
     const activeChip = document.querySelector('.pain-chip.active');
     const painType = activeChip ? activeChip.getAttribute('data-pain') : 'back';
     updatePainDetail(painType);
+  }
+
+  if (typeof window.goToStretchStep === 'function') {
+    const activeTab = document.querySelector('.routine-tab.active');
+    const currentStep = activeTab ? parseInt(activeTab.getAttribute('data-step'), 10) : 0;
+    window.goToStretchStep(currentStep);
   }
 
   if (typeof renderLucideIcons === 'function') {

@@ -239,23 +239,51 @@ function initWebsite() {
     appointmentForm.addEventListener('submit', handleBooking);
   }
 
-  // 6. Pain Navigator Chips Click Handler
+  // 6. Pain Navigator & Anatomical Body Scanner
   const painChips = document.querySelectorAll('.pain-chip');
+  const hotspots = document.querySelectorAll('.body-hotspot');
+
+  function selectPain(painType) {
+    painChips.forEach(c => {
+      if (c.getAttribute('data-pain') === painType) {
+        c.classList.add('active');
+      } else {
+        c.classList.remove('active');
+      }
+    });
+
+    hotspots.forEach(h => {
+      const pulse = h.querySelector('.hotspot-pulse');
+      if (h.getAttribute('data-pain') === painType) {
+        h.classList.add('active');
+        if (pulse) pulse.classList.add('animate-ping', 'opacity-100');
+      } else {
+        h.classList.remove('active');
+        if (pulse) pulse.classList.remove('animate-ping', 'opacity-100');
+      }
+    });
+
+    if (typeof updatePainDetail === 'function') {
+      updatePainDetail(painType);
+    }
+  }
+
   painChips.forEach(chip => {
     chip.addEventListener('click', () => {
-      painChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
       const painType = chip.getAttribute('data-pain');
-      if (typeof updatePainDetail === 'function') {
-        updatePainDetail(painType);
-      }
+      selectPain(painType);
+    });
+  });
+
+  hotspots.forEach(hotspot => {
+    hotspot.addEventListener('click', () => {
+      const painType = hotspot.getAttribute('data-pain');
+      selectPain(painType);
     });
   });
 
   // Initialize Pain Navigator with default back condition
-  if (typeof updatePainDetail === 'function') {
-    updatePainDetail('back');
-  }
+  selectPain('back');
 
   // 7. Automatic Background Photo Slideshow
   function initHeroBgSlider() {
@@ -310,6 +338,276 @@ function initWebsite() {
   }
 
   initHeroBgSlider();
+
+  // 8. Interactive 3-Minute Daily Spine & Joint Mobility Tool
+  function initStretchRoutine() {
+    const routineSection = document.getElementById('daily-exercises');
+    if (!routineSection) return;
+
+    const stretchExercises = [
+      {
+        id: 0,
+        duration: 30,
+        tag: { en: "Cervical & Posture • Neck Relief", bn: "সারভাইকাল কেয়ার • ঘাড়ের টান উপশম" },
+        title: { en: "Cervical Chin Tuck & Retraction", bn: "সারভাইকাল চিন টাক ও ঘাড়ের ব্যায়াম" },
+        steps: [
+          { en: "Sit tall with shoulders relaxed and look straight ahead.", bn: "মেরুদণ্ড সোজা করে বসুন এবং কাঁধ শিথিল রাখুন।" },
+          { en: "Gently glide your chin backward (making a slight double chin) without tilting head down.", bn: "মাথা নিচু না করে চিবুক বা থুতনিটি আলতো করে পেছনের দিকে টানুন।" },
+          { en: "Hold the gentle tension at the base of your skull for 10 seconds. Repeat 3 times.", bn: "১০ সেকেন্ড ধরে রাখুন এবং স্বাভাবিক শ্বাস নিন। মোট ৩ বার করুন।" }
+        ],
+        target: { en: "Relieves forward neck strain from phone/laptop usage and prevents disc herniation.", bn: "ঝুঁকে ফোন বা কম্পিউটার দেখার কারণে ঘাড়ের ডিস্কের ওপর তৈরি হওয়া অস্বাভাবিক চাপ দূর করে।" },
+        badge: { en: "Step 1 of 3 • 30s", bn: "ধাপ ১ / ৩ • ৩০ সেকেন্ড" }
+      },
+      {
+        id: 1,
+        duration: 45,
+        tag: { en: "Lumbar Spine • Disc Decompression", bn: "লাম্বার স্পাইন • মেরুদণ্ডের চাপ কমানো" },
+        title: { en: "Seated Spinal Cat & Cow Extension", bn: "মেরুদণ্ডের ক্যাট ও কাউ স্ট্রেচ" },
+        steps: [
+          { en: "Sit on a sturdy chair with feet flat on the floor and hands on knees.", bn: "চেয়ারে পা সোজা রেখে বসুন এবং হাত দুটি হাঁটুর ওপর রাখুন।" },
+          { en: "Inhale gently and arch your chest forward, opening your shoulder blades.", bn: "শ্বাস নিতে নিতে বুক সামনের দিকে সামান্য প্রসারিত করুন।" },
+          { en: "Exhale slowly, gently rounding your back and tucking your pelvis slightly.", bn: "ধীরে ধীরে শ্বাস ছাড়তে ছাড়তে পিঠ পেছনের দিকে গোল বা কার্ভ করুন।" }
+        ],
+        target: { en: "Restores hydration and fluid exchange into compressed L4-L5 lumbar discs.", bn: "কোমরের L4-L5 ডিস্কের অভ্যন্তরীণ রক্ত ও তরল চলাচল বৃদ্ধি করে সায়াটিকা ব্যথা প্রতিরোধ করে।" },
+        badge: { en: "Step 2 of 3 • 45s", bn: "ধাপ ২ / ৩ • ৪৫ সেকেন্ড" }
+      },
+      {
+        id: 2,
+        duration: 45,
+        tag: { en: "Joint Preservation • Knee Stability", bn: "অস্থিসন্ধি কেয়ার • হাঁটুর পেশি শক্তি" },
+        title: { en: "Isometric Quad Press & Ankle Pumps", bn: "আইসোমেট্রিক কুয়াড্রিসেপস ও গোড়ালি ব্যায়াম" },
+        steps: [
+          { en: "Sit comfortably and extend one leg forward, keeping the knee straight.", bn: "চেয়ারে বসে একটি পা সামনের দিকে সোজা করে মেলে ধরুন।" },
+          { en: "Tighten your thigh (quadriceps) muscle firmly, pulling toes toward you.", bn: "ঊরুর পেশি শক্ত করে টানটান করুন এবং পায়ের পাতা নিজের দিকে টানুন।" },
+          { en: "Hold for 5 seconds, lower gently, and alternate between left and right knees.", bn: "৫ সেকেন্ড ধরে রেখে নামিয়ে নিন। দুই পায়ে পর্যায়ক্রমে করুন।" }
+        ],
+        target: { en: "Transfers stair-climbing joint impact from cartilage to thigh muscles, avoiding surgery.", bn: "হাঁটুর ওপর অতিরিক্ত চাপ না ফেলে পেশি শক্তিশালী করে কার্টিলেজের ক্ষয় রোধ করে।" },
+        badge: { en: "Step 3 of 3 • 45s", bn: "ধাপ ৩ / ৩ • ৪৫ সেকেন্ড" }
+      }
+    ];
+
+    let currentStep = 0;
+    let timerInterval = null;
+    let remainingSeconds = stretchExercises[0].duration;
+    let isRunning = false;
+
+    const ring = document.getElementById('timer-progress-ring');
+    const secondsDisplay = document.getElementById('timer-seconds-display');
+    const btnToggle = document.getElementById('btn-routine-toggle');
+    const btnToggleText = document.getElementById('btn-routine-text');
+    const btnNext = document.getElementById('btn-routine-next');
+    const instructionBox = document.getElementById('routine-instruction-box');
+    const stepTabs = document.querySelectorAll('.routine-tab');
+
+    const totalCircumference = 314.159; // 2 * Math.PI * 50
+
+    function getLang() {
+      return (typeof currentLang !== 'undefined' && currentLang) ? currentLang : (localStorage.getItem('clinic_lang') || 'en');
+    }
+
+    function renderCurrentExercise() {
+      const ex = stretchExercises[currentStep];
+      const lang = getLang();
+
+      if (instructionBox) {
+        instructionBox.innerHTML = `
+          <div class="space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold">
+              <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+              <span>${ex.tag[lang] || ex.tag.en}</span>
+              <span class="text-teal-600/70 font-normal">|</span>
+              <span class="text-teal-700">${ex.badge[lang] || ex.badge.en}</span>
+            </div>
+            
+            <h3 class="font-serif text-2xl font-bold text-royal-950">
+              ${ex.title[lang] || ex.title.en}
+            </h3>
+
+            <div class="space-y-2.5 pt-2">
+              ${ex.steps.map((st, i) => `
+                <div class="flex items-start gap-3 text-xs sm:text-sm text-slate-700">
+                  <span class="w-5 h-5 rounded-full bg-brand-100 text-brand-800 font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+                    ${i + 1}
+                  </span>
+                  <p class="leading-relaxed font-light">${st[lang] || st.en}</p>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 flex items-center gap-2 text-xs text-slate-500">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+              <span><strong>${lang === 'bn' ? 'ডাক্তারের পরামর্শ:' : 'Clinical Target:'}</strong> ${ex.target[lang] || ex.target.en}</span>
+            </div>
+          </div>
+        `;
+        renderLucideIcons();
+      }
+
+      stepTabs.forEach((tab, idx) => {
+        if (idx === currentStep) {
+          tab.classList.add('active', 'bg-brand-700', 'text-white');
+          tab.classList.remove('bg-white/10', 'text-slate-300');
+        } else {
+          tab.classList.remove('active', 'bg-brand-700', 'text-white');
+          tab.classList.add('bg-white/10', 'text-slate-300');
+        }
+      });
+
+      updateTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+      const ex = stretchExercises[currentStep];
+      if (secondsDisplay) {
+        secondsDisplay.textContent = remainingSeconds;
+      }
+      if (ring) {
+        const percentLeft = remainingSeconds / ex.duration;
+        const offset = totalCircumference * (1 - percentLeft);
+        ring.style.strokeDashoffset = offset;
+      }
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      isRunning = true;
+      if (btnToggleText) {
+        btnToggleText.textContent = getLang() === 'bn' ? 'বিরতি' : 'Pause Timer';
+      }
+
+      timerInterval = setInterval(() => {
+        if (remainingSeconds > 0) {
+          remainingSeconds--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          isRunning = false;
+          if (currentStep < stretchExercises.length - 1) {
+            goToStep(currentStep + 1);
+            startTimer();
+          } else {
+            showCompletion();
+          }
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      isRunning = false;
+      if (btnToggleText) {
+        btnToggleText.textContent = getLang() === 'bn' ? 'চালিয়ে যান' : 'Resume Timer';
+      }
+    }
+
+    function toggleTimer() {
+      if (isRunning) {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
+    }
+
+    function goToStep(stepIndex) {
+      pauseTimer();
+      currentStep = (stepIndex + stretchExercises.length) % stretchExercises.length;
+      remainingSeconds = stretchExercises[currentStep].duration;
+      if (btnToggleText) {
+        btnToggleText.textContent = getLang() === 'bn' ? 'স্ট্রেচিং শুরু করুন' : 'Start Guided Routine';
+      }
+      renderCurrentExercise();
+    }
+
+    function showCompletion() {
+      const lang = getLang();
+      if (instructionBox) {
+        instructionBox.innerHTML = `
+          <div class="text-center py-6 space-y-4">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-md">
+              <i data-lucide="check-circle" class="w-9 h-9"></i>
+            </div>
+            <h3 class="font-serif text-2xl font-bold text-royal-950">
+              ${lang === 'bn' ? 'চমৎকার! ৩-মিনিটের সেশন সম্পন্ন!' : 'Great Job! 3-Minute Routine Complete!'}
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed font-light">
+              ${lang === 'bn' ? 'প্রতিদিন এই ব্যায়ামগুলো করলে মেরুদণ্ড সুস্থ থাকে। কোনো তীব্র ব্যথা থাকলে নিজে নিজে চেষ্টা না করে সরাসরি ডাক্তারের পরামর্শ নিন।' : 'Daily repetition keeps spinal discs hydrated and active. If you experience persistent chronic pain, consult Dr. Das for a clinical evaluation.'}
+            </p>
+            <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+              <button type="button" onclick="goToStretchStep(0)" class="px-5 py-2.5 rounded-xl bg-brand-50 hover:bg-brand-100 text-brand-800 font-bold text-xs uppercase tracking-wider transition">
+                ${lang === 'bn' ? 'পুনরায় শুরু করুন' : 'Restart Routine'}
+              </button>
+              <a href="https://wa.me/918167412511?text=Hello%20Dr.%20Sudhanya%20Das,%20I%20completed%20the%203-minute%20stretch%20routine%20and%20would%20like%20to%20consult%20about%20my%20pain."
+                 target="_blank" rel="noopener noreferrer"
+                 class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-1.5 shadow-md">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>${lang === 'bn' ? 'হোয়াটসঅ্যাপে পরামর্শ নিন' : 'Consult Doctor on WhatsApp'}</span>
+              </a>
+            </div>
+          </div>
+        `;
+        renderLucideIcons();
+      }
+    }
+
+    window.goToStretchStep = goToStep;
+
+    if (btnToggle) {
+      btnToggle.addEventListener('click', toggleTimer);
+    }
+
+    if (btnNext) {
+      btnNext.addEventListener('click', () => {
+        goToStep(currentStep + 1);
+      });
+    }
+
+    stepTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const step = parseInt(tab.getAttribute('data-step'), 10);
+        goToStep(step);
+      });
+    });
+
+    renderCurrentExercise();
+  }
+
+  initStretchRoutine();
+
+  // 9. Floating Doctor WhatsApp Quick-Chat Concierge
+  function initDoctorChatCard() {
+    const chatWidget = document.getElementById('doctor-chat-widget');
+    const btnOpen = document.getElementById('btn-chat-open');
+    const chatCard = document.getElementById('doctor-chat-card');
+    const btnClose = document.getElementById('btn-chat-close');
+
+    if (!btnOpen || !chatCard) return;
+
+    btnOpen.addEventListener('click', (e) => {
+      e.stopPropagation();
+      chatCard.classList.remove('hidden');
+      btnOpen.classList.add('hidden');
+      renderLucideIcons();
+    });
+
+    if (btnClose) {
+      btnClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        chatCard.classList.add('hidden');
+        btnOpen.classList.remove('hidden');
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      if (chatWidget && !chatWidget.contains(e.target)) {
+        if (!chatCard.classList.contains('hidden')) {
+          chatCard.classList.add('hidden');
+          btnOpen.classList.remove('hidden');
+        }
+      }
+    });
+  }
+
+  initDoctorChatCard();
 }
 
 // Ensure execution whether loaded synchronously or after DOM is already interactive
