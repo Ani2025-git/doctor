@@ -1,0 +1,13 @@
+{
+  "name": "dr-sudhanya-das-physio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dr. Sudhanya Das Physiotherapy & Rehabilitation Clinic Website",
+  "scripts": {
+    "build": "node build-css.js",
+    "build:css": "node build-css.js"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
