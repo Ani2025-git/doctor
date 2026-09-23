@@ -8,4 +8,4 @@ process.argv = [
   '--minify'
 ];
 
-require('./node_modules/tailwindcss/lib/cli.js');
+require(path.resolve(__dirname, 'node_modules/tailwindcss/lib/cli.js'));
